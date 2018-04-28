@@ -25575,11 +25575,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\C#\\Simple Notes\\Simple Notes\\Simple Notes.csproj",
+      "projectUniqueName": "D:\\C#\\GitHub\\SimpleNotes\\Simple Notes\\Simple Notes.csproj",
       "projectName": "Simple Notes",
-      "projectPath": "D:\\C#\\Simple Notes\\Simple Notes\\Simple Notes.csproj",
+      "projectPath": "D:\\C#\\GitHub\\SimpleNotes\\Simple Notes\\Simple Notes.csproj",
       "packagesPath": "C:\\Users\\Cyber\\.nuget\\packages\\",
-      "outputPath": "D:\\C#\\Simple Notes\\Simple Notes\\obj\\",
+      "outputPath": "D:\\C#\\GitHub\\SimpleNotes\\Simple Notes\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
