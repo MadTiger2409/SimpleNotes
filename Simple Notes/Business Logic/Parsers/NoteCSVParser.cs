@@ -13,11 +13,14 @@ namespace Simple_Notes.Business_Logic.Parsers
         {
             var notes = new List<NoteModel>();
 
-            foreach (var line in csvLines)
+            if (csvLines != null)
             {
-                var splitLine = line.Split(';');
+                foreach (var line in csvLines)
+                {
+                    var splitLine = line.Split(';');
 
-                notes.Add(new NoteModel(splitLine[0], splitLine[1]));
+                    notes.Add(new NoteModel(splitLine[0], splitLine[1]));
+                }
             }
 
             return await Task.FromResult(notes.AsEnumerable());
@@ -27,11 +30,14 @@ namespace Simple_Notes.Business_Logic.Parsers
         {
             var csvLines = new List<string>();
 
-            foreach (var note in notes)
+            if (notes != null)
             {
-                var csvLine = $"{note.Title.ToString()};{note.Description.ToString()}";
+                foreach (var note in notes)
+                {
+                    var csvLine = $"{note.Title.ToString()};{note.Description.ToString()}";
 
-                csvLines.Add(csvLine);
+                    csvLines.Add(csvLine);
+                }
             }
 
             return await Task.FromResult(csvLines.AsEnumerable());
