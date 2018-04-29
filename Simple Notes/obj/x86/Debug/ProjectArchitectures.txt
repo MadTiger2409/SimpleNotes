@@ -1,1 +1,0 @@
-D:\C#\GitHub\SimpleNotes\Simple Notes\Simple Notes.csproj;x86
