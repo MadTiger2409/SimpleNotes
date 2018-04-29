@@ -19,9 +19,25 @@ namespace Simple_Notes.Business_Logic.ViewModels
                 NotesCollection.Add(new NoteModel($"Note number {i}", $"Description of the {i}. note."));
             }
         }
-
-        public NoteModel SelectedNote { get; set; }
         public List<NoteModel> NotesCollection { get; set; }
+
+        private NoteModel _selectedNote;
+
+        public NoteModel SelectedNote
+        {
+            get { return _selectedNote; }
+            set
+            {
+                if (value == _selectedNote)
+                {
+                    return;
+                }
+
+                _selectedNote = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedNote)));
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
