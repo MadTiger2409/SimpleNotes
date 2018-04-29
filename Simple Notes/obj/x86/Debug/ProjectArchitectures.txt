@@ -1,1 +1,1 @@
-D:\C#\Simple Notes\Simple Notes\Simple Notes.csproj;x86
+D:\C#\GitHub\SimpleNotes\Simple Notes\Simple Notes.csproj;x86
