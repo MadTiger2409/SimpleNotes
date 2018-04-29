@@ -1,4 +1,5 @@
 ﻿using Simple_Notes.Business_Logic.Models;
+using Simple_Notes.Business_Logic.Parsers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,19 +11,20 @@ namespace Simple_Notes.Business_Logic.ViewModels
 {
     class MainViewModel : INotifyPropertyChanged
     {
-        public MainViewModel()
-        {
-            NotesCollection = new List<NoteModel>();
-
-            for (int i = 0; i < 5; i++)
-            {
-                NotesCollection.Add(new NoteModel($"Note number {i}", $"Description of the {i}. note."));
-            }
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
         public List<NoteModel> NotesCollection { get; set; }
-
+        public FileManager FileManager { get; set; }
         private NoteModel _selectedNote;
 
+        public MainViewModel()
+        {
+            FileManager = new FileManager("notes.csv");
+            //NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
+            NotesCollection = new List<NoteModel>() { new NoteModel(), new NoteModel() };
+
+            SelectedNote = NotesCollection[0];
+        }
+        
         public NoteModel SelectedNote
         {
             get { return _selectedNote; }
@@ -38,7 +40,22 @@ namespace Simple_Notes.Business_Logic.ViewModels
             }
         }
 
+        private async Task<List<NoteModel>> GetNotesAsync()
+        {
+            var notes = await NoteCSVParser.ToNotesAsync(await FileManager.ReadCSVLinesAsync());
 
-        public event PropertyChangedEventHandler PropertyChanged;
+            if (notes.Count < 1)
+            {
+                notes.Add(new NoteModel());
+            }
+
+            return notes;
+        }
+
+        public async Task SaveNotesAsync()
+        {
+            var csvLines = await NoteCSVParser.ToCSVLinesAsync(NotesCollection);
+            await FileManager.SaveCSVLinesAsync(csvLines);
+        }
     }
 }

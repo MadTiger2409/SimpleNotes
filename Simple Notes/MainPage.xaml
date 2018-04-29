@@ -20,23 +20,52 @@
     </Page.DataContext>
 
     <Grid Background="White">
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer Grid.Column="0">
 
-        </ScrollViewer>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Row="0" FontSize="36" PlaceholderText="Note title" TextWrapping="NoWrap" MaxLength="100" Text="{Binding SelectedNote.Title, Mode=OneWay}"/>
+
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Notes" FontSize="24" Margin="12,0,0,0" FontWeight="Bold"/>
+                <MenuFlyoutSeparator/>
+            </StackPanel>
+
             <ScrollViewer Grid.Row="1">
-                <TextBox FontSize="36" PlaceholderText="Note description" TextWrapping="Wrap" Text="{Binding SelectedNote.Description, Mode=OneWay}"/>
+                <ListView ItemTemplate="{StaticResource NoteModelTemplate}"
+                      ItemsSource="{Binding NotesCollection}" 
+                      VerticalAlignment="Top"
+                      SelectedItem="{Binding SelectedNote, Mode=TwoWay}"/>
             </ScrollViewer>
         </Grid>
-        <ListView ItemTemplate="{StaticResource NoteModelTemplate}" ItemsSource="{Binding NotesCollection}"  VerticalAlignment="Top" SelectedItem="{Binding SelectedNote, Mode=TwoWay}"/>
+        
+        
+        <Grid Grid.Column="1">
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <TextBox Grid.Row="0"
+                     FontSize="36"
+                     PlaceholderText="Note title"
+                     TextWrapping="NoWrap"
+                     MaxLength="40"
+                     Text="{Binding SelectedNote.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            
+            <ScrollViewer Grid.Row="1">
+                <TextBox FontSize="36"
+                         PlaceholderText="Note description"
+                         TextWrapping="Wrap"
+                         Text="{Binding SelectedNote.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Page>

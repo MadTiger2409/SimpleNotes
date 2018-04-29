@@ -9,11 +9,11 @@ namespace Simple_Notes.Business_Logic.Parsers
 {
     static class NoteCSVParser
     {
-        public static async Task<List<NoteModel>> ToNote(List<string> csvLines)
+        public static async Task<List<NoteModel>> ToNotesAsync(List<string> csvLines)
         {
             var notes = new List<NoteModel>();
 
-            if (csvLines != null)
+            if (csvLines != null && csvLines.Count > 0)
             {
                 foreach (var line in csvLines)
                 {
@@ -26,11 +26,11 @@ namespace Simple_Notes.Business_Logic.Parsers
             return await Task.FromResult(notes);
         }
 
-        public static async Task<List<string>> ToCSVLines(List<NoteModel> notes)
+        public static async Task<List<string>> ToCSVLinesAsync(List<NoteModel> notes)
         {
             var csvLines = new List<string>();
 
-            if (notes != null)
+            if (notes != null && notes.Count > 0)
             {
                 foreach (var note in notes)
                 {

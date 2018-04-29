@@ -19,7 +19,7 @@ namespace Simple_Notes.Business_Logic
             AppFolder = ApplicationData.Current.LocalFolder;
         }
 
-        public async Task<List<string>> ReadCSVLines()
+        public async Task<List<string>> ReadCSVLinesAsync()
         {
             IList<string> csvLines = new List<string>();
 
@@ -38,7 +38,7 @@ namespace Simple_Notes.Business_Logic
             }
         }
 
-        public async Task SaveCSVLines(List<string> csvLines)
+        public async Task SaveCSVLinesAsync(List<string> csvLines)
         {
             File = await AppFolder.GetFileAsync(FullFileName);
             await FileIO.WriteLinesAsync(File, csvLines);
