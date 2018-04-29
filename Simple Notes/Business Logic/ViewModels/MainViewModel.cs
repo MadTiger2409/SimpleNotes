@@ -12,11 +12,16 @@ namespace Simple_Notes.Business_Logic.ViewModels
     {
         public MainViewModel()
         {
+            NotesCollection = new List<NoteModel>();
 
+            for (int i = 0; i < 5; i++)
+            {
+                NotesCollection.Add(new NoteModel($"Note number {i}", $"Description of the {i}. note."));
+            }
         }
 
         public NoteModel SelectedNote { get; set; }
-        public IEnumerable<NoteModel> NotesCollection { get; set; }
+        public List<NoteModel> NotesCollection { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

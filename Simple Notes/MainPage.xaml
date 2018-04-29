@@ -6,7 +6,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModels="using:Simple_Notes.Business_Logic.ViewModels"
     x:Class="Simple_Notes.MainPage"
-    mc:Ignorable="d" MinWidth="600" MinHeight="500">
+    mc:Ignorable="d" MinWidth="600" MinHeight="500" RequestedTheme="Default">
+    <Page.Resources>
+        <DataTemplate x:Key="NoteModelTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Title, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap"/>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
 
     <Page.DataContext>
         <ViewModels:MainViewModel/>
@@ -18,16 +25,18 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <ScrollViewer Grid.Column="0">
-            <StackPanel />
+
         </ScrollViewer>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Row="0" FontSize="36" PlaceholderText="Note title" TextWrapping="NoWrap"/>
-            <TextBox Grid.Row="1" FontSize="36" PlaceholderText="Note description" TextWrapping="Wrap"/>
+            <TextBox Grid.Row="0" FontSize="36" PlaceholderText="Note title" TextWrapping="NoWrap" MaxLength="100"/>
+            <ScrollViewer Grid.Row="1">
+                <TextBox FontSize="36" PlaceholderText="Note description" TextWrapping="Wrap"/>
+            </ScrollViewer>
         </Grid>
-
+        <ListView ItemTemplate="{StaticResource NoteModelTemplate}" ItemsSource="{Binding NotesCollection}"  VerticalAlignment="Top"/>
     </Grid>
 </Page>

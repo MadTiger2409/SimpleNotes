@@ -9,7 +9,7 @@ namespace Simple_Notes.Business_Logic.Parsers
 {
     static class NoteCSVParser
     {
-        public static async Task<IEnumerable<NoteModel>> ToNote(IEnumerable<string> csvLines)
+        public static async Task<List<NoteModel>> ToNote(List<string> csvLines)
         {
             var notes = new List<NoteModel>();
 
@@ -23,10 +23,10 @@ namespace Simple_Notes.Business_Logic.Parsers
                 }
             }
 
-            return await Task.FromResult(notes.AsEnumerable());
+            return await Task.FromResult(notes);
         }
 
-        public static async Task<IEnumerable<string>> ToCSVLines(IEnumerable<NoteModel> notes)
+        public static async Task<List<string>> ToCSVLines(List<NoteModel> notes)
         {
             var csvLines = new List<string>();
 
@@ -40,7 +40,7 @@ namespace Simple_Notes.Business_Logic.Parsers
                 }
             }
 
-            return await Task.FromResult(csvLines.AsEnumerable());
+            return await Task.FromResult(csvLines);
         }
     }
 }

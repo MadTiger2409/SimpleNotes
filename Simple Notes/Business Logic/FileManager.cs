@@ -19,7 +19,7 @@ namespace Simple_Notes.Business_Logic
             AppFolder = ApplicationData.Current.LocalFolder;
         }
 
-        public async Task<IEnumerable<string>> ReadCSVLines()
+        public async Task<List<string>> ReadCSVLines()
         {
             IList<string> csvLines = new List<string>();
 
@@ -28,20 +28,20 @@ namespace Simple_Notes.Business_Logic
                 File = await AppFolder.GetFileAsync(FullFileName);
                 csvLines = await FileIO.ReadLinesAsync(File);
 
-                return await Task.FromResult(csvLines.AsEnumerable());
+                return await Task.FromResult(csvLines.ToList());
             }
             catch (Exception)
             {
                 await AppFolder.CreateFileAsync(FullFileName);
 
-                return await Task.FromResult(csvLines.AsEnumerable());
+                return await Task.FromResult(csvLines.ToList());
             }
         }
 
-        public async Task SaveCSVLines(IEnumerable<string> csvLines)
+        public async Task SaveCSVLines(List<string> csvLines)
         {
-                File = await AppFolder.GetFileAsync(FullFileName);
-                await FileIO.WriteLinesAsync(File, csvLines);
+            File = await AppFolder.GetFileAsync(FullFileName);
+            await FileIO.WriteLinesAsync(File, csvLines);
         }
     }
 }
