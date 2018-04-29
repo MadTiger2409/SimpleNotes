@@ -1,13 +1,33 @@
 ﻿<Page
-    x:Class="Simple_Notes.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Simple_Notes"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:ViewModels="using:Simple_Notes.Business_Logic.ViewModels"
+    x:Class="Simple_Notes.MainPage"
+    mc:Ignorable="d" MinWidth="600" MinHeight="500">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <ViewModels:MainViewModel/>
+    </Page.DataContext>
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Column="0">
+            <StackPanel />
+        </ScrollViewer>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" FontSize="36" PlaceholderText="Note title" TextWrapping="NoWrap"/>
+            <TextBox Grid.Row="1" FontSize="36" PlaceholderText="Note description" TextWrapping="Wrap"/>
+        </Grid>
 
     </Grid>
 </Page>

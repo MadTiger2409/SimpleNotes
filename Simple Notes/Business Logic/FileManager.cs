@@ -40,15 +40,8 @@ namespace Simple_Notes.Business_Logic
 
         public async Task SaveCSVLines(IEnumerable<string> csvLines)
         {
-            try
-            {
                 File = await AppFolder.GetFileAsync(FullFileName);
                 await FileIO.WriteLinesAsync(File, csvLines);
-            }
-            catch (Exception)
-            {
-                await AppFolder.CreateFileAsync(FullFileName);
-            }
         }
     }
 }

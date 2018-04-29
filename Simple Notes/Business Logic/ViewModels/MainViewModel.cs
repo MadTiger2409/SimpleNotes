@@ -15,7 +15,7 @@ namespace Simple_Notes.Business_Logic.ViewModels
 
         }
 
-        public NoteModel SelectedModel { get; set; }
+        public NoteModel SelectedNote { get; set; }
         public IEnumerable<NoteModel> NotesCollection { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
