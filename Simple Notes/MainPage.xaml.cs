@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Simple_Notes.Business_Logic.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -25,6 +27,12 @@ namespace Simple_Notes
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        private async void SaveOnClick(object sender, RoutedEventArgs e)
+        {
+            var ctx = (MainViewModel)this.DataContext;
+            await ctx.SaveNotesAsync();
         }
     }
 }

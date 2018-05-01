@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Simple_Notes.Business_Logic.ViewModels
 {
@@ -19,8 +20,8 @@ namespace Simple_Notes.Business_Logic.ViewModels
         public MainViewModel()
         {
             FileManager = new FileManager("notes.csv");
-            //NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
-            NotesCollection = new List<NoteModel>() { new NoteModel(), new NoteModel() };
+            NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
+            //NotesCollection = new List<NoteModel>() { new NoteModel(), new NoteModel() };
 
             SelectedNote = NotesCollection[0];
         }
@@ -38,7 +39,7 @@ namespace Simple_Notes.Business_Logic.ViewModels
                 _selectedNote = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedNote)));
             }
-        }
+        } 
 
         private async Task<List<NoteModel>> GetNotesAsync()
         {
