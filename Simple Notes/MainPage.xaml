@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModels="using:Simple_Notes.Business_Logic.ViewModels"
     x:Class="Simple_Notes.MainPage"
-    mc:Ignorable="d" MinWidth="600" MinHeight="500" Background="{ThemeResource SystemControlAccentDark2AcrylicWindowAccentDark2MediumHighBrush}">
+    mc:Ignorable="d" MinWidth="200" MinHeight="200" Background="{ThemeResource SystemControlAccentDark2AcrylicWindowAccentDark2MediumHighBrush}">
     <Page.Resources>
         <DataTemplate x:Key="NoteModelTemplate">
             <Grid>
