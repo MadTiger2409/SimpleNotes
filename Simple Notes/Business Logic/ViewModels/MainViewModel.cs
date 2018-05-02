@@ -2,6 +2,7 @@
 using Simple_Notes.Business_Logic.Parsers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -13,19 +14,34 @@ namespace Simple_Notes.Business_Logic.ViewModels
     class MainViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public List<NoteModel> NotesCollection { get; set; }
+        public ObservableCollection<NoteModel> _notesCollection { get; set; }
         public FileManager FileManager { get; set; }
         private NoteModel _selectedNote;
 
         public MainViewModel()
         {
             FileManager = new FileManager("notes.csv");
-            NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
-            //NotesCollection = new List<NoteModel>() { new NoteModel(), new NoteModel() };
+            //NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
+            _notesCollection = new ObservableCollection<NoteModel>() { new NoteModel("A"), new NoteModel("B"), new NoteModel("C") };
 
-            SelectedNote = NotesCollection[0];
+            SelectedNote = _notesCollection[0];
         }
-        
+
+        public ObservableCollection<NoteModel> NotesCollection
+        {
+            get { return _notesCollection; }
+            set
+            {
+                if (value == _notesCollection)
+                {
+                    return;
+                }
+
+                _notesCollection = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedNote)));
+            }
+        }
+
         public NoteModel SelectedNote
         {
             get { return _selectedNote; }
@@ -41,7 +57,7 @@ namespace Simple_Notes.Business_Logic.ViewModels
             }
         } 
 
-        private async Task<List<NoteModel>> GetNotesAsync()
+        private async Task<ObservableCollection<NoteModel>> GetNotesAsync()
         {
             var notes = await NoteCSVParser.ToNotesAsync(await FileManager.ReadCSVLinesAsync());
 
@@ -55,8 +71,18 @@ namespace Simple_Notes.Business_Logic.ViewModels
 
         public async Task SaveNotesAsync()
         {
-            var csvLines = await NoteCSVParser.ToCSVLinesAsync(NotesCollection);
+            var csvLines = await NoteCSVParser.ToCSVLinesAsync(_notesCollection);
             await FileManager.SaveCSVLinesAsync(csvLines);
+        }
+
+        public async Task RemoveNoteAsync()
+        {
+            if (SelectedNote == null || _notesCollection.Count <= 0)
+            {
+                return;
+            }
+
+            await Task.FromResult(_notesCollection.Remove(SelectedNote));
         }
     }
 }

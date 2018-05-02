@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,9 @@ namespace Simple_Notes.Business_Logic.Parsers
 {
     static class NoteCSVParser
     {
-        public static async Task<List<NoteModel>> ToNotesAsync(List<string> csvLines)
+        public static async Task<ObservableCollection<NoteModel>> ToNotesAsync(List<string> csvLines)
         {
-            var notes = new List<NoteModel>();
+            var notes = new ObservableCollection<NoteModel>();
 
             if (csvLines != null && csvLines.Count > 0)
             {
@@ -26,7 +27,7 @@ namespace Simple_Notes.Business_Logic.Parsers
             return await Task.FromResult(notes);
         }
 
-        public static async Task<List<string>> ToCSVLinesAsync(List<NoteModel> notes)
+        public static async Task<List<string>> ToCSVLinesAsync(ObservableCollection<NoteModel> notes)
         {
             var csvLines = new List<string>();
 

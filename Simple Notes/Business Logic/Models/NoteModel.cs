@@ -49,5 +49,10 @@ namespace Simple_Notes.Business_Logic.Models
             Title = title;
             Description = description;
         }
+
+        public override string ToString()
+        {
+            return $"{_title}, {_description}";
+        }
     }
 }

@@ -29,10 +29,16 @@ namespace Simple_Notes
             this.InitializeComponent();
         }
 
-        private async void SaveOnClick(object sender, RoutedEventArgs e)
+        private async void Save_OnClick(object sender, RoutedEventArgs e)
         {
             var ctx = (MainViewModel)this.DataContext;
             await ctx.SaveNotesAsync();
+        }
+
+        private async void RemoveSelected_OnClick(object sender, RoutedEventArgs e)
+        {
+            var ctx = (MainViewModel)this.DataContext;
+            await ctx.RemoveNoteAsync();
         }
     }
 }

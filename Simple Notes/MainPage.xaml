@@ -6,12 +6,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModels="using:Simple_Notes.Business_Logic.ViewModels"
     x:Class="Simple_Notes.MainPage"
-    mc:Ignorable="d" MinWidth="600" MinHeight="500" RequestedTheme="Default">
+    mc:Ignorable="d" MinWidth="600" MinHeight="500" Background="{ThemeResource SystemControlAccentDark2AcrylicWindowAccentDark2MediumHighBrush}">
     <Page.Resources>
         <DataTemplate x:Key="NoteModelTemplate">
-            <StackPanel>
-                <TextBlock Text="{Binding Title, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap"/>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1" Text="{Binding Title, Mode=TwoWay}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" Margin="4,0,0,0"/>
+            </Grid>
         </DataTemplate>
     </Page.Resources>
 
@@ -19,47 +22,52 @@
         <ViewModels:MainViewModel/>
     </Page.DataContext>
 
-    <Grid Background="White">
+    <Grid Background="Transparent">
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0">
+        <Grid Grid.Column="0" Background="{ThemeResource SystemControlAccentDark2AcrylicWindowAccentDark2MediumHighBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <RelativePanel Grid.Row="0">
                 <TextBlock RelativePanel.AlignLeftWithPanel="True" Text="Notes" FontSize="24" Margin="12,0,5,0" FontWeight="Bold"/>
-                <Button Content="Save" RelativePanel.AlignRightWithPanel="True" Click="SaveOnClick"/>
             </RelativePanel>
 
-            <ScrollViewer Grid.Row="1">
+            <ScrollViewer Grid.Row="1" Background="{ThemeResource SystemControlAccentDark2AcrylicWindowAccentDark2MediumHighBrush}" VerticalScrollBarVisibility="Auto">
                 <ListView ItemTemplate="{StaticResource NoteModelTemplate}"
                       ItemsSource="{Binding NotesCollection}" 
                       VerticalAlignment="Top"
                       SelectedItem="{Binding SelectedNote, Mode=TwoWay}"/>
             </ScrollViewer>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <Button Content="Delete" Click="RemoveSelected_OnClick"/>
+                <Button Content="Save" RelativePanel.AlignRightWithPanel="True" Click="Save_OnClick" Margin="10,0,0,0"/>
+            </StackPanel>
         </Grid>
         
         
         <Grid Grid.Column="1">
-            
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="12*"/>
             </Grid.RowDefinitions>
-            
+
             <TextBox Grid.Row="0"
-                     FontSize="36"
-                     PlaceholderText="Note title"
-                     TextWrapping="NoWrap"
-                     MaxLength="40"
-                     Text="{Binding SelectedNote.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            
+                        FontSize="36"
+                        PlaceholderText="Note title"
+                        TextWrapping="NoWrap"
+                        MaxLength="40"
+                        Text="{Binding SelectedNote.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
             <ScrollViewer Grid.Row="1">
                 <TextBox FontSize="36"
                          PlaceholderText="Note description"
