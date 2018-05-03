@@ -40,5 +40,11 @@ namespace Simple_Notes
             var ctx = (MainViewModel)this.DataContext;
             await ctx.RemoveNoteAsync();
         }
+
+        private async void Add_OnClick(object sender, RoutedEventArgs e)
+        {
+            var ctx = (MainViewModel)this.DataContext;
+            await ctx.AddNoteAsync();
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace Simple_Notes.Business_Logic.Models
             }
         }
 
-        public NoteModel(string title = "New title", string description = "New description")
+        public NoteModel(string title = "New title", string description = "")
         {
             Title = title;
             Description = description;

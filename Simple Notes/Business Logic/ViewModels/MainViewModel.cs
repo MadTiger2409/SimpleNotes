@@ -21,8 +21,8 @@ namespace Simple_Notes.Business_Logic.ViewModels
         public MainViewModel()
         {
             FileManager = new FileManager("notes.csv");
-            //NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
-            _notesCollection = new ObservableCollection<NoteModel>() { new NoteModel("A"), new NoteModel("B"), new NoteModel("C") };
+            NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
+            //_notesCollection = new ObservableCollection<NoteModel>() { new NoteModel("A"), new NoteModel("B"), new NoteModel("C") };
 
             SelectedNote = _notesCollection[0];
         }
@@ -77,12 +77,19 @@ namespace Simple_Notes.Business_Logic.ViewModels
 
         public async Task RemoveNoteAsync()
         {
-            if (SelectedNote == null || _notesCollection.Count <= 0)
+            if (SelectedNote == null || NotesCollection.Count <= 0)
             {
                 return;
             }
 
-            await Task.FromResult(_notesCollection.Remove(SelectedNote));
+            await Task.FromResult(NotesCollection.Remove(SelectedNote));
+            SelectedNote = NotesCollection.FirstOrDefault();
+        }
+
+        public async Task AddNoteAsync()
+        {
+            NotesCollection.Add(new NoteModel());
+            await Task.FromResult(SelectedNote = NotesCollection.Last());
         }
     }
 }
