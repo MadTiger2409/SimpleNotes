@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Business Logic\Commands\RelayCommand.cs" />
     <Compile Include="Business Logic\FileManager.cs" />
     <Compile Include="Business Logic\Models\NoteModel.cs" />
     <Compile Include="Business Logic\Parsers\NoteCSVParser.cs" />
@@ -172,6 +173,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.1.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

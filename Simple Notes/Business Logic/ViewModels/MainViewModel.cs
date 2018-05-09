@@ -1,4 +1,5 @@
-﻿using Simple_Notes.Business_Logic.Models;
+﻿using Simple_Notes.Business_Logic.Commands;
+using Simple_Notes.Business_Logic.Models;
 using Simple_Notes.Business_Logic.Parsers;
 using System;
 using System.Collections.Generic;
@@ -13,33 +14,32 @@ namespace Simple_Notes.Business_Logic.ViewModels
 {
     class MainViewModel : INotifyPropertyChanged
     {
+        #region Members
         public event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<NoteModel> _notesCollection { get; set; }
         public FileManager FileManager { get; set; }
         private NoteModel _selectedNote;
+
+        #endregion
 
         public MainViewModel()
         {
             FileManager = new FileManager("notes.csv");
             NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
             //_notesCollection = new ObservableCollection<NoteModel>() { new NoteModel("A"), new NoteModel("B"), new NoteModel("C") };
-
             SelectedNote = _notesCollection[0];
+
+            SaveCommand = new RelayCommand(async () => await SaveNotesAsync());
         }
+
+        #region Properties
+
+        public RelayCommand SaveCommand { get; private set; }
 
         public ObservableCollection<NoteModel> NotesCollection
         {
             get { return _notesCollection; }
-            set
-            {
-                if (value == _notesCollection)
-                {
-                    return;
-                }
-
-                _notesCollection = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedNote)));
-            }
+            set { _notesCollection = value; }
         }
 
         public NoteModel SelectedNote
@@ -55,7 +55,11 @@ namespace Simple_Notes.Business_Logic.ViewModels
                 _selectedNote = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedNote)));
             }
-        } 
+        }
+
+        #endregion
+
+        #region Methods
 
         private async Task<ObservableCollection<NoteModel>> GetNotesAsync()
         {
@@ -91,5 +95,7 @@ namespace Simple_Notes.Business_Logic.ViewModels
             NotesCollection.Add(new NoteModel());
             await Task.FromResult(SelectedNote = NotesCollection.Last());
         }
+
+        #endregion
     }
 }
