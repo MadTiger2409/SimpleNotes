@@ -53,12 +53,13 @@
 
             <Viewbox Grid.Row="2">
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="Delete" Click="RemoveSelected_OnClick"
+                    <Button Content="Delete" Command="{Binding Path=RemoveCommand}"
                             Background="{ThemeResource SystemControlAccentDark1AcrylicElementAccentDark1Brush }"/>
                     <Button Content="Save" Command="{Binding Path=SaveCommand}"
                             Margin="10,0,0,0"
                             Background="{ThemeResource SystemControlAccentDark1AcrylicElementAccentDark1Brush }"/>
-                    <Button Content="Add" Click="Add_OnClick" Margin="10,0,0,0"
+                    <Button Content="Add" Command="{Binding Path=AddCommand}"
+                            Margin="10,0,0,0"
                             Background="{ThemeResource SystemControlAccentDark1AcrylicElementAccentDark1Brush }"/>
                 </StackPanel>
             </Viewbox>

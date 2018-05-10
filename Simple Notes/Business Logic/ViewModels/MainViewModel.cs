@@ -24,22 +24,30 @@ namespace Simple_Notes.Business_Logic.ViewModels
 
         public MainViewModel()
         {
+            AddCommand = new RelayCommand(async () => await AddNoteAsync());
+            SaveCommand = new RelayCommand(async () => await SaveNotesAsync());
+            RemoveCommand = new RelayCommand(async () => await RemoveNoteAsync(), CanRemoveNote);
+
             FileManager = new FileManager("notes.csv");
             NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
             //_notesCollection = new ObservableCollection<NoteModel>() { new NoteModel("A"), new NoteModel("B"), new NoteModel("C") };
             SelectedNote = _notesCollection[0];
-
-            SaveCommand = new RelayCommand(async () => await SaveNotesAsync());
         }
 
         #region Properties
 
+        public RelayCommand AddCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
+        public RelayCommand RemoveCommand { get; private set; }
 
         public ObservableCollection<NoteModel> NotesCollection
         {
             get { return _notesCollection; }
-            set { _notesCollection = value; }
+            set
+            {
+                _notesCollection = value;
+                RemoveCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public NoteModel SelectedNote
@@ -53,6 +61,7 @@ namespace Simple_Notes.Business_Logic.ViewModels
                 }
 
                 _selectedNote = value;
+                RemoveCommand.RaiseCanExecuteChanged();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedNote)));
             }
         }
@@ -94,6 +103,11 @@ namespace Simple_Notes.Business_Logic.ViewModels
         {
             NotesCollection.Add(new NoteModel());
             await Task.FromResult(SelectedNote = NotesCollection.Last());
+        }
+
+        public bool CanRemoveNote()
+        {
+            return SelectedNote != null;
         }
 
         #endregion
