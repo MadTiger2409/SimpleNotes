@@ -74,16 +74,18 @@
             </Grid.RowDefinitions>
 
             <TextBox Grid.Row="0"
-                        FontSize="36"
-                        PlaceholderText="Note title"
-                        TextWrapping="NoWrap"
-                        MaxLength="40"
-                        Text="{Binding SelectedNote.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                     FontSize="36"
+                     PlaceholderText="Note title"
+                     TextWrapping="NoWrap"
+                     MaxLength="40"
+                     IsEnabled="{Binding IsTextBoxEnabled, Mode=OneWay}"
+                     Text="{Binding SelectedNote.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <TextBox FontSize="36"
                          PlaceholderText="Note description"
                          TextWrapping="Wrap"
+                         IsEnabled="{Binding IsTextBoxEnabled, Mode=OneWay}"
                          Text="{Binding SelectedNote.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </ScrollViewer>
         </Grid>

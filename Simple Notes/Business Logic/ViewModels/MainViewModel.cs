@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel;
 
 namespace Simple_Notes.Business_Logic.ViewModels
 {
@@ -16,9 +17,9 @@ namespace Simple_Notes.Business_Logic.ViewModels
     {
         #region Members
         public event PropertyChangedEventHandler PropertyChanged;
-        public ObservableCollection<NoteModel> _notesCollection { get; set; }
-        public FileManager FileManager { get; set; }
+        public ObservableCollection<NoteModel> _notesCollection;
         private NoteModel _selectedNote;
+        private bool _isTextBoxEnabled;
 
         #endregion
 
@@ -27,15 +28,24 @@ namespace Simple_Notes.Business_Logic.ViewModels
             AddCommand = new RelayCommand(async () => await AddNoteAsync());
             SaveCommand = new RelayCommand(async () => await SaveNotesAsync());
             RemoveCommand = new RelayCommand(async () => await RemoveNoteAsync(), CanRemoveNote);
-
             FileManager = new FileManager("notes.csv");
-            NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
-            //_notesCollection = new ObservableCollection<NoteModel>() { new NoteModel("A"), new NoteModel("B"), new NoteModel("C") };
-            SelectedNote = _notesCollection[0];
+
+            if (DesignMode.DesignModeEnabled == true)
+            {
+                NotesCollection = new ObservableCollection<NoteModel>() { new NoteModel("A"), new NoteModel("B"), new NoteModel("C") };
+            }
+            else
+            {
+                NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
+            }
+
+            SelectedNote = NotesCollection[0];
+            //IsTextBoxEnabled = CanRemoveNote();
         }
 
         #region Properties
 
+        public FileManager FileManager { get; set; }
         public RelayCommand AddCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand RemoveCommand { get; private set; }
@@ -62,7 +72,18 @@ namespace Simple_Notes.Business_Logic.ViewModels
 
                 _selectedNote = value;
                 RemoveCommand.RaiseCanExecuteChanged();
+                IsTextBoxEnabled = CanRemoveNote();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedNote)));
+            }
+        }
+
+        public bool IsTextBoxEnabled
+        {
+            get { return _isTextBoxEnabled; }
+            set
+            {
+                _isTextBoxEnabled = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsTextBoxEnabled)));
             }
         }
 
@@ -96,13 +117,13 @@ namespace Simple_Notes.Business_Logic.ViewModels
             }
 
             await Task.FromResult(NotesCollection.Remove(SelectedNote));
-            SelectedNote = NotesCollection.FirstOrDefault();
+            SelectedNote = NotesCollection.LastOrDefault();
         }
 
         public async Task AddNoteAsync()
         {
             NotesCollection.Add(new NoteModel());
-            await Task.FromResult(SelectedNote = NotesCollection.Last());
+            await Task.FromResult(SelectedNote = NotesCollection.LastOrDefault());
         }
 
         public bool CanRemoveNote()
