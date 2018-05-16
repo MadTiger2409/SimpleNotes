@@ -5,17 +5,25 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModels="using:Simple_Notes.Business_Logic.ViewModels"
+    xmlns:media="using:Windows.UI.Xaml.Media"
     x:Class="Simple_Notes.MainPage"
     mc:Ignorable="d" MinWidth="200" MinHeight="200" Background="{ThemeResource SystemControlAccentDark2AcrylicWindowAccentDark2MediumHighBrush}">
     <Page.Resources>
-        <DataTemplate x:Key="NoteModelTemplate">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="1" Text="{Binding Title, Mode=TwoWay}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" Margin="4,0,0,0"/>
-            </Grid>
-        </DataTemplate>
+        <ResourceDictionary>
+            <media:AcrylicBrush x:Key="CustomAcrylicBrush"
+                                BackgroundSource="Backdrop"
+                                TintOpacity="0.8"
+                                TintColor="#383838"
+                                FallbackColor="{ThemeResource SystemAccentColorDark2}" />
+            <DataTemplate x:Key="NoteModelTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Text="{Binding Title, Mode=TwoWay}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" Margin="4,0,0,0"/>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Page.DataContext>
@@ -29,44 +37,78 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Background="{ThemeResource SystemControlAccentDark2AcrylicWindowAccentDark2MediumHighBrush}">
+        <Grid Grid.Column="0"
+              Background="{ThemeResource SystemControlAccentDark2AcrylicWindowAccentDark2MediumHighBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="12*"/>
             </Grid.RowDefinitions>
 
-            <Viewbox Grid.Row="0" HorizontalAlignment="Left">
-                <RelativePanel>
-                    <TextBlock RelativePanel.AlignLeftWithPanel="True" Text="Notes" FontSize="24" Margin="12,0,5,0" FontWeight="Bold"/>
-                </RelativePanel>
-            </Viewbox>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Viewbox Grid.Column="0"
+                         HorizontalAlignment="Left">
+                <TextBlock x:Name="titleTextBlock"
+                           Text="Notes"
+                           FontSize="24"
+                           Margin="3,0,0,0"
+                           FontWeight="Bold"/>
+                </Viewbox>
+
+                <Viewbox Grid.Column="1">
+                    <StackPanel Margin="0,4,4,4"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        
+                        <AppBarButton RelativePanel.LeftOf="addAppButton"
+                                      Icon="Remove"
+                                      Width="55"
+                                      Height="55"
+                                      BorderBrush="Black"
+                                      Background="Transparent"
+                                      Style="{ThemeResource AppBarButtonRevealStyle}"
+                                      Command="{Binding Path=RemoveCommand}"/>
+
+                        <AppBarButton RelativePanel.LeftOf="saveAppButton"
+                                      Icon="Add"
+                                      Width="55"
+                                      Height="55"
+                                      Margin="10,0,0,0"
+                                      BorderBrush="Black"
+                                      BorderThickness="1"
+                                      Background="Transparent"
+                                      Command="{Binding Path=AddCommand}"
+                                      Style="{ThemeResource AppBarButtonRevealStyle}"/>
+
+                        <AppBarButton RelativePanel.AlignRightWithPanel="True"
+                                      Icon="Save"
+                                      Width="55"
+                                      Height="55"
+                                      Margin="10,0,0,0"
+                                      BorderBrush="Black"
+                                      BorderThickness="1"
+                                      Background="Transparent"
+                                      Command="{Binding Path=SaveCommand}"
+                                      Style="{ThemeResource AppBarButtonRevealStyle}"/>
+                    </StackPanel>
+                </Viewbox>
+            </Grid>
 
             <ScrollViewer Grid.Row="1"
-                          Background="{ThemeResource SystemControlAccentDark2AcrylicWindowAccentDark2MediumHighBrush}"
                           VerticalScrollBarVisibility="Auto">
                 <ListView ItemTemplate="{StaticResource NoteModelTemplate}"
-                      ItemsSource="{Binding NotesCollection}" 
-                      VerticalAlignment="Top"
-                      SelectedItem="{Binding SelectedNote, Mode=TwoWay}"/>
+                          ItemsSource="{Binding NotesCollection}" 
+                          VerticalAlignment="Top"
+                          SelectedItem="{Binding SelectedNote, Mode=TwoWay}"/>
             </ScrollViewer>
-
-            <Viewbox Grid.Row="2">
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Delete" Command="{Binding Path=RemoveCommand}"
-                            Background="{ThemeResource SystemControlAccentDark1AcrylicElementAccentDark1Brush }"/>
-                    <Button Content="Save" Command="{Binding Path=SaveCommand}"
-                            Margin="10,0,0,0"
-                            Background="{ThemeResource SystemControlAccentDark1AcrylicElementAccentDark1Brush }"/>
-                    <Button Content="Add" Command="{Binding Path=AddCommand}"
-                            Margin="10,0,0,0"
-                            Background="{ThemeResource SystemControlAccentDark1AcrylicElementAccentDark1Brush }"/>
-                </StackPanel>
-            </Viewbox>
         </Grid>
-        
-        
-        <Grid Grid.Column="1">
+
+
+        <Grid Grid.Column="1" Background="{ThemeResource CustomAcrylicBrush}">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -78,6 +120,9 @@
                      PlaceholderText="Note title"
                      TextWrapping="NoWrap"
                      MaxLength="40"
+                     Background="Transparent"
+                     Margin="20"
+                     BorderThickness="0.2"
                      IsEnabled="{Binding IsTextBoxEnabled, Mode=OneWay}"
                      Text="{Binding SelectedNote.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
@@ -85,6 +130,9 @@
                 <TextBox FontSize="36"
                          PlaceholderText="Note description"
                          TextWrapping="Wrap"
+                         Background="Transparent"
+                         Margin="20"
+                         BorderThickness="0.2"
                          IsEnabled="{Binding IsTextBoxEnabled, Mode=OneWay}"
                          Text="{Binding SelectedNote.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </ScrollViewer>
