@@ -39,8 +39,7 @@ namespace Simple_Notes.Business_Logic.ViewModels
                 NotesCollection = GetNotesAsync().GetAwaiter().GetResult();
             }
 
-            SelectedNote = NotesCollection[0];
-            //IsTextBoxEnabled = CanRemoveNote();
+            SelectedNote = NotesCollection.FirstOrDefault();
         }
 
         #region Properties
@@ -92,16 +91,7 @@ namespace Simple_Notes.Business_Logic.ViewModels
         #region Methods
 
         private async Task<ObservableCollection<NoteModel>> GetNotesAsync()
-        {
-            var notes = await NoteCSVParser.ToNotesAsync(await FileManager.ReadCSVLinesAsync());
-
-            if (notes.Count < 1)
-            {
-                notes.Add(new NoteModel());
-            }
-
-            return notes;
-        }
+            => await NoteCSVParser.ToNotesAsync(await FileManager.ReadCSVLinesAsync());
 
         public async Task SaveNotesAsync()
         {
